@@ -4,7 +4,7 @@ namespace _2048
 {
     public partial class Root : Form
     {
-        int[,]? data = null;
+        List<DataItem>? data = null;
         int[,]? buttons = null;
         Dictionary<int, string> ImageNames = new Dictionary<int, string>
         {
@@ -27,7 +27,7 @@ namespace _2048
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.data = new int[,] { { 2, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } };
+            data.Append(new DataItem[] { });
             CreateStartingImages();
         }
         private void CreateStartingImages()
