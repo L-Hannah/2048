@@ -9,24 +9,31 @@ namespace _2048
     internal class DataItem
     {
         private int num;
-        private int[,] position;
+        private int x;
+        private int y;
         private DataItem? left;
         private DataItem? right;
         private DataItem? above;
         private DataItem? below;
-        public DataItem(int[,] position, int number)
+        public DataItem(int x, int y, int number)
         {
             this.num = number;
-            this.position = position;
+            this.x = x;
+            this.y = y;
         }
         public int Num {
             get => num;
             set { num = value; }
         }
-        public int[,] Position
+        public int X
         {
-            get => position;
-            set { position = value; }
+            get => x;
+            set { x = value; }
+        }
+        public int Y
+        {
+            get => y;
+            set { y = value; }
         }
         public DataItem Left
         {

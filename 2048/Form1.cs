@@ -4,7 +4,7 @@ namespace _2048
 {
     public partial class Root : Form
     {
-        List<DataItem>? data = null;
+        List<List<DataItem>> data = new List<List<DataItem>>();
         int[,]? buttons = null;
         Dictionary<int, string> ImageNames = new Dictionary<int, string>
         {
@@ -27,7 +27,9 @@ namespace _2048
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            data.Append(new DataItem[] { });
+            int curX = 0;
+            int curY = 0;
+            data[curX][curY] = new DataItem(curX, curY,2);
             CreateStartingImages();
         }
         private void CreateStartingImages()
@@ -65,7 +67,7 @@ namespace _2048
         {
             int[] Arrows = { 37, 38, 39, 40 };
             if (!Arrows.Contains(e.KeyValue)) { return; }
-            if (this.data!=null) { MessageBox.Show(this.data[1,1].ToString()); }
+            if (this.data!=null) { MessageBox.Show(this.data[1][1].ToString()); }
             switch (e.KeyValue)
             {
                 case (37):
