@@ -47,6 +47,7 @@ namespace _2048
         {
             var Rand = new Random();
             int counter = 0;
+            bool fourcounter = false;
             for (int i = 0; i < 4; i++)
             {
                 for (int j=0; j < 4; j++)
@@ -63,8 +64,9 @@ namespace _2048
                     {
                         counter++;
                         newBox.Image = Properties.Resources.two;
-                    } else if (Rand.Next(2)==0 && counter<2)
+                    } else if (Rand.Next(2) == 0 && counter < 2 && !fourcounter)
                     {
+                        fourcounter = true;
                         counter++;
                         newBox.Image = Properties.Resources.four;
                     }
