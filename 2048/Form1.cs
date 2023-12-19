@@ -6,18 +6,20 @@ namespace _2048
     {
         List<List<DataItem>> data = new List<List<DataItem>>();
         int[,]? buttons = null;
-        Dictionary<int, string> ImageNames = new Dictionary<int, string>
+        Dictionary<int, Bitmap> ImageNames = new Dictionary<int, Bitmap>
         {
-            {2, "two"},
-            {4, "four"},
-            {8, "eight"},
-            {16, "sixteen"},
-            {32, "thirtytwo"},
-            {64, "sixtyfour"},
-            {128, "onehundredtwentyeight"},
-            {256, "twohundredfiftysix"},
-            {512, "fivehundredtwelve"},
-            {1024, "onethousandtwentyfour"}
+            {0, Properties.Resources.blank},
+            {2, Properties.Resources.two},
+            {4, Properties.Resources.four},
+            {8, Properties.Resources.eight},
+            {16, Properties.Resources.sixteen},
+            {32, Properties.Resources.thirtytwo},
+            {64, Properties.Resources.sixtyfour},
+            {128, Properties.Resources.onehundredtwentyeight},
+            {256, Properties.Resources.twohundredfiftysix},
+            {512, Properties.Resources.fivehundredtwelve},
+            {1024, Properties.Resources.onethousandtwentyfour},
+            {2048, Properties.Resources.twothousandfourtyeight }
         };
         public Root()
         {
@@ -46,43 +48,69 @@ namespace _2048
             //int curY = 0;
             //How to add or edit a DataItem within the data array:
             //data[curX][curY] = new DataItem(curX, curY,2);
-            CreateStartingImages();
+            CreateStartingData();
+            MakeImages();
+            ShowData();
         }
-        private void CreateStartingImages()
+        private void MakeImages()
         {
-            var Rand = new Random();
-            int counter = 0;
-            bool fourcounter = false;
             for (int i = 0; i < 4; i++)
             {
                 for (int j=0; j < 4; j++)
                 {
                     PictureBox newBox = new()
                     {
-
                         Name = i.ToString() + j.ToString(),
                         Image = Properties.Resources.blank,
                         Location = new Point(i * 120 +13, j * 120 +13),
                         Size = new Size(112, 112)
                     };
-                    if (Rand.Next(2) == 1 && counter < 2)
-                    {
-                        counter++;
-                        newBox.Image = Properties.Resources.two;
-                        data[i][j] = new DataItem(i, j, 2);
-                    } else if (Rand.Next(2) == 0 && counter < 2 && !fourcounter)
-                    {
-                        fourcounter = true;
-                        counter++;
-                        newBox.Image = Properties.Resources.four;
-                        data[i][j] = new DataItem(i, j, 4);
-                    }
                     this.Controls.Add(newBox);
                     newBox.BringToFront();
                 }
             }
         }
-
+        private void ShowData()
+        {
+            for (int i =0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    PictureBox CurrentBox = (PictureBox)Controls[i.ToString() + j.ToString()];
+                    CurrentBox.Image = ImageNames[data[i][j].Num];
+                }
+            }
+        }
+        private void CreateStartingData()
+        {
+            var Rand = new Random();
+            int counter = 0;
+            bool fourcounter = false;
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if (Rand.Next(2) == 1 && counter < 2)
+                    {
+                        if (Rand.Next(2) == 1 && !fourcounter)
+                        {
+                            fourcounter = true;
+                            counter++;
+                            data[i][j] = new DataItem(i, j, 4);
+                        }
+                        else
+                        {
+                            counter++;
+                            data[i][j] = new DataItem(i, j, 2);
+                        }
+                    }
+                    else
+                    {
+                        data[i][j] = new DataItem(i, j, 0);
+                    }
+                }
+            }
+        }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             int[] Arrows = { 37, 38, 39, 40 };
