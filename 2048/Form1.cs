@@ -43,14 +43,10 @@ namespace _2048
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            ConstructData();
-            //int curX = 0;
-            //int curY = 0;
-            //How to add or edit a DataItem within the data array:
-            //data[curX][curY] = new DataItem(curX, curY,2);
-            CreateStartingData();
-            MakeImages();
-            ShowData();
+            ConstructData(); //Literally makes 4 lists within the data array and sets their contents to null.
+            CreateStartingData();//Accesses each data item within the array and sets their values to either blank, 2 or 4.
+            MakeImages();//Creates the blank images
+            ShowData();//Updates images
         }
         private void MakeImages()
         {
@@ -79,6 +75,28 @@ namespace _2048
                     PictureBox CurrentBox = (PictureBox)Controls[i.ToString() + j.ToString()];
                     CurrentBox.Image = ImageNames[data[i][j].Num];
                 }
+            }
+        }
+        private void Move(string direction)
+        {
+            switch (direction)
+            {
+                case "up":
+                    for (int i = 0;i<4;i++)
+                    {
+                        for (int j=0; j<4 ; j++)
+                        {
+                            bool Cont = false; //Cont is short for contine
+                            while (!Cont)
+                            {
+                                DataItem current = data[i][j];
+                                if (current.Moved || current.Y==0) { Cont=true; }                            
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    break;
             }
         }
         private void CreateStartingData()
@@ -115,8 +133,9 @@ namespace _2048
         {
             int[] Arrows = { 37, 38, 39, 40 };
             if (!Arrows.Contains(e.KeyValue)) { return; }
-            //if (this.data!=null) { MessageBox.Show(this.data[1][1].ToString()); }
-            for (int i = 0; i<4 ; i++)
+
+            //Loop below is used for debugging to show the data in a string format
+            /*for (int i = 0; i<4 ; i++)
             {
                 for (int j = 0; j < 4 ; j++)
                 {
@@ -126,7 +145,7 @@ namespace _2048
                         MessageBox.Show(test); 
                     }
                 }
-            }
+            }*/
             switch (e.KeyValue)
             {
                 case (37):
@@ -134,6 +153,7 @@ namespace _2048
                     break;
                 case (38):
                     //Up arrow
+                    Move("up");
                     break;
                 case (39):
                     //Right arrow
