@@ -15,6 +15,7 @@ namespace _2048
         private DataItem? right;
         private DataItem? above;
         private DataItem? below;
+        private bool moved = false;
         public DataItem(int x, int y, int number)
         {
             this.num = number;
@@ -24,6 +25,11 @@ namespace _2048
         public int Num {
             get => num;
             set { num = value; }
+        }
+        public bool Moved
+        {
+            get => moved;
+            set { moved = value; }
         }
         public int X
         {

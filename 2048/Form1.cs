@@ -24,10 +24,10 @@ namespace _2048
             InitializeComponent();
             KeyPreview = true;
         }
-
-        private void Form1_Load(object sender, EventArgs e)
+        private void ConstructData()
         {
-            for (int i=0; i<4; i++) {
+            for (int i = 0; i < 4; i++)
+            {
                 data.Add(
                 new List<DataItem>()
                 {
@@ -38,9 +38,14 @@ namespace _2048
                 }
             );
             }
-            int curX = 0;
-            int curY = 0;
-            data[curX][curY] = new DataItem(curX, curY,2);
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            ConstructData();
+            //int curX = 0;
+            //int curY = 0;
+            //How to add or edit a DataItem within the data array:
+            //data[curX][curY] = new DataItem(curX, curY,2);
             CreateStartingImages();
         }
         private void CreateStartingImages()
@@ -64,11 +69,13 @@ namespace _2048
                     {
                         counter++;
                         newBox.Image = Properties.Resources.two;
+                        data[i][j] = new DataItem(i, j, 2);
                     } else if (Rand.Next(2) == 0 && counter < 2 && !fourcounter)
                     {
                         fourcounter = true;
                         counter++;
                         newBox.Image = Properties.Resources.four;
+                        data[i][j] = new DataItem(i, j, 4);
                     }
                     this.Controls.Add(newBox);
                     newBox.BringToFront();
@@ -80,7 +87,18 @@ namespace _2048
         {
             int[] Arrows = { 37, 38, 39, 40 };
             if (!Arrows.Contains(e.KeyValue)) { return; }
-            if (this.data!=null) { MessageBox.Show(this.data[1][1].ToString()); }
+            //if (this.data!=null) { MessageBox.Show(this.data[1][1].ToString()); }
+            for (int i = 0; i<4 ; i++)
+            {
+                for (int j = 0; j < 4 ; j++)
+                {
+                    if (data[i][j]!=null) 
+                    {
+                        string test = "X: " + data[i][j].X.ToString() + " Y: " + data[i][j].Y.ToString() + "\nValue: "+data[i][j].Num.ToString();
+                        MessageBox.Show(test); 
+                    }
+                }
+            }
             switch (e.KeyValue)
             {
                 case (37):
