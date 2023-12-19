@@ -73,6 +73,16 @@ namespace _2048.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap blank {
+            get {
+                object obj = ResourceManager.GetObject("blank", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap eight {
             get {
                 object obj = ResourceManager.GetObject("eight", resourceCulture);
@@ -166,6 +176,16 @@ namespace _2048.Properties {
         internal static System.Drawing.Bitmap twohundredfiftysix {
             get {
                 object obj = ResourceManager.GetObject("twohundredfiftysix", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap twothousandfourtyeight {
+            get {
+                object obj = ResourceManager.GetObject("twothousandfourtyeight", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

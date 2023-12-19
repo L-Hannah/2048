@@ -1,3 +1,5 @@
+using System.Diagnostics.Metrics;
+
 namespace _2048
 {
     public partial class Root : Form
@@ -30,17 +32,25 @@ namespace _2048
         }
         private void CreateButtonDelegate()
         {
+            var Rand = new Random();
+            int counter = 0;
             for (int i = 0; i < 4; i++)
             {
                 for (int j=0; j < 4; j++)
                 {
                     PictureBox newBox = new()
                     {
+
                         Name = i.ToString() + j.ToString(),
-                        Text = "Created Box",
+                        Image = Properties.Resources.blank,
                         Location = new Point(i * 120 +13, j * 120 +13),
                         Size = new Size(112, 112)
                     };
+                    if (Rand.Next(2) == 1 && counter < 2)
+                    {
+                        counter++;
+                        newBox.Image = Properties.Resources.two;
+                    }
                     this.Controls.Add(newBox);
                     newBox.BringToFront();
                 }

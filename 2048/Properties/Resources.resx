@@ -121,6 +121,9 @@
   <data name="background" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\blank.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="eight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -150,5 +153,8 @@
   </data>
   <data name="twohundredfiftysix" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\256.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="twothousandfourtyeight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\2048.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
