@@ -28,9 +28,9 @@ namespace _2048
         private void Form1_Load(object sender, EventArgs e)
         {
             this.data = new int[,] { { 2, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } };
-            CreateButtonDelegate();
+            CreateStartingImages();
         }
-        private void CreateButtonDelegate()
+        private void CreateStartingImages()
         {
             var Rand = new Random();
             int counter = 0;
@@ -50,6 +50,10 @@ namespace _2048
                     {
                         counter++;
                         newBox.Image = Properties.Resources.two;
+                    } else if (Rand.Next(2)==0 && counter<2)
+                    {
+                        counter++;
+                        newBox.Image = Properties.Resources.four;
                     }
                     this.Controls.Add(newBox);
                     newBox.BringToFront();
