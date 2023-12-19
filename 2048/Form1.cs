@@ -27,6 +27,17 @@ namespace _2048
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            for (int i=0; i<4; i++) {
+                data.Add(
+                new List<DataItem>()
+                {
+                null,
+                null,
+                null,
+                null
+                }
+            );
+            }
             int curX = 0;
             int curY = 0;
             data[curX][curY] = new DataItem(curX, curY,2);
