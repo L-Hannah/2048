@@ -76,6 +76,7 @@ namespace _2048
                 }
             }
         }
+
         private void Move(string direction)
         {
             switch (direction)
@@ -83,24 +84,19 @@ namespace _2048
                 case "up":
                     for (int i = 0;i<4;i++)
                     {
-                        for (int j=0; j<4 ; j++)
+                        for (int j=3; j>-1 ; j--)
                         {
-                            for (int x = 0; x < j; x++)
+                            DataItem current = data[i][j];
+                            if (current.Moved || j==0 || current.Num==0) { continue; }
+                            DataItem above = data[i][j-1];
+                            if (above.Num==0)
                             {
-                                DataItem current = data[i][j - x];
-                                if (current.Moved || j == 0 || current.Num == 0 || (j-x)==0) { continue; }
-                                DataItem above = data[i][j - x -1];
-                                MessageBox.Show("Current num: " + current.Num + " Above num: " + above.Num +" i: "+i+" j: "+j);
-                                if (above.Num == 0)
-                                {
-                                    data[i][j - x] = current;
-                                    data[i][j] = above;
-                                }
-                                else if (above.Num == current.Num)
-                                {
-                                    data[i][j - x].Num = current.Num * 2;
-                                    data[i][j].Num = 0;
-                                }
+                                data[i][j - 1] = current;
+                                data[i][j] = above;
+                            } else if (above.Num==current.Num)
+                            {
+                                data[i][j - 1].Num = current.Num * 2;
+                                data[i][j].Num = 0;
                             }
                             ShowData();
                         }
