@@ -8,44 +8,20 @@ namespace _2048
 {
     internal class DataItem
     {
-        private int num;
-        private DataItem? left;
-        private DataItem? right;
-        private DataItem? above;
-        private DataItem? below;
-        private bool moved = false;
+        private int num; //Private attribute of the number value for the dataitem
+        private bool moved = false; //Private boolean attribute for whether the piece has been moved (when it merges)
         public DataItem(int number)
         {
-            this.num = number;
+            num = number; //Sets the attribute to whatever number is passed in
         }
         public int Num {
-            get => num;
-            set { num = value; }
+            get => num; //When doing DataItem.Num in a different file, this will get the num value and return it
+            set { num = value; } //When doing DataItem.Num=value in a different file, this will change the num value to the one given
         }
         public bool Moved
         {
-            get => moved;
-            set { moved = value; }
-        }
-        public DataItem Left
-        {
-            get => left;
-            set { left = value; }
-        }
-        public DataItem Right
-        {
-            get => right;
-            set { right = value; }
-        }
-        public DataItem Above
-        {
-            get => above;
-            set { above = value; }
-        }
-        public DataItem Below
-        {
-            get => below;
-            set { below = value; }
+            get => moved; //Same as Num
+            set { moved = value; } //Same as num
         }
     }
 }
