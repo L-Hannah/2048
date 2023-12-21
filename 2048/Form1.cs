@@ -77,7 +77,7 @@ namespace _2048
             }
         }
 
-        private void Move(string direction)
+        private void GridMove(string direction)
         {
             switch (direction)
             {
@@ -102,6 +102,7 @@ namespace _2048
                                 else if (above.Num == current.Num)
                                 {
                                     data[i][j - 1].Num = current.Num * 2;
+                                    data[i][j-1].Moved = true;
                                     data[i][j].Num = 0;
                                     moved = true;
                                 }
@@ -110,6 +111,36 @@ namespace _2048
                     }
                     ShowData();
                     break;
+                /*case "down":
+                    moved = true;
+                    while (moved)
+                    {
+                        moved=false;
+                        for (int i = 0; i < 4; i++)
+                        {
+                            for (int j = 0; j < 4; j++)
+                            {
+                                DataItem current = data[i][j];
+                                if (current.Moved || j == 4 || current.Num == 0) { continue; }
+                                DataItem below = data[i][j + 1];
+                                if (below.Num==0)
+                                {
+                                    data[i][i + 1] = current;
+                                    data[i][j + 1] = below;
+                                    moved = true;
+                                }
+                                else if (below.Num== current.Num)
+                                {
+                                    data[i][j+1].Num=current.Num * 2;
+                                    data[i][j+1].Moved = true;
+                                    data[i][j].Num=0;
+                                    moved = true;
+                                }
+                            }
+                        }
+                    }
+                    ShowData();
+                    break;*/
                 default:
                     break;
             }
@@ -168,13 +199,14 @@ namespace _2048
                     break;
                 case (38):
                     //Up arrow
-                    Move("up");
+                    GridMove("up");
                     break;
                 case (39):
                     //Right arrow
                     break;
                 case (40):
                     //Down arrow
+                    GridMove("down");
                     break;
                 default:
                     //Literally shouldn't happen
