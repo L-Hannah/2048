@@ -82,25 +82,33 @@ namespace _2048
             switch (direction)
             {
                 case "up":
-                    for (int i = 0;i<4;i++)
+                    bool moved=true;
+                    while (moved)
                     {
-                        for (int j=3; j>-1 ; j--)
+                        moved = false;
+                        for (int i = 0; i < 4; i++)
                         {
-                            DataItem current = data[i][j];
-                            if (current.Moved || j==0 || current.Num==0) { continue; }
-                            DataItem above = data[i][j-1];
-                            if (above.Num==0)
+                            for (int j = 3; j > -1; j--)
                             {
-                                data[i][j - 1] = current;
-                                data[i][j] = above;
-                            } else if (above.Num==current.Num)
-                            {
-                                data[i][j - 1].Num = current.Num * 2;
-                                data[i][j].Num = 0;
+                                DataItem current = data[i][j];
+                                if (current.Moved || j == 0 || current.Num == 0) { continue; }
+                                DataItem above = data[i][j - 1];
+                                if (above.Num == 0)
+                                {
+                                    data[i][j - 1] = current;
+                                    data[i][j] = above;
+                                    moved = true;
+                                }
+                                else if (above.Num == current.Num)
+                                {
+                                    data[i][j - 1].Num = current.Num * 2;
+                                    data[i][j].Num = 0;
+                                    moved = true;
+                                }
                             }
-                            ShowData();
                         }
                     }
+                    ShowData();
                     break;
                 default:
                     break;
