@@ -5,7 +5,6 @@ namespace _2048
     public partial class Root : Form
     {
         List<List<DataItem>> data = new List<List<DataItem>>();
-        int[,]? buttons = null;
         Dictionary<int, Bitmap> ImageNames = new Dictionary<int, Bitmap>
         {
             {0, Properties.Resources.blank},
@@ -77,23 +76,39 @@ namespace _2048
                 }
             }
         }
+
         private void Move(string direction)
         {
             switch (direction)
             {
                 case "up":
-                    for (int i = 0;i<4;i++)
+                    bool moved=true;
+                    while (moved)
                     {
-                        for (int j=0; j<4 ; j++)
+                        moved = false;
+                        for (int i = 0; i < 4; i++)
                         {
-                            bool Cont = false; //Cont is short for contine
-                            while (!Cont)
+                            for (int j = 3; j > -1; j--)
                             {
                                 DataItem current = data[i][j];
-                                if (current.Moved || current.Y==0) { Cont=true; }                            
+                                if (current.Moved || j == 0 || current.Num == 0) { continue; }
+                                DataItem above = data[i][j - 1];
+                                if (above.Num == 0)
+                                {
+                                    data[i][j - 1] = current;
+                                    data[i][j] = above;
+                                    moved = true;
+                                }
+                                else if (above.Num == current.Num)
+                                {
+                                    data[i][j - 1].Num = current.Num * 2;
+                                    data[i][j].Num = 0;
+                                    moved = true;
+                                }
                             }
                         }
                     }
+                    ShowData();
                     break;
                 default:
                     break;
@@ -114,17 +129,17 @@ namespace _2048
                         {
                             fourcounter = true;
                             counter++;
-                            data[i][j] = new DataItem(i, j, 4);
+                            data[i][j] = new DataItem(4);
                         }
                         else
                         {
                             counter++;
-                            data[i][j] = new DataItem(i, j, 2);
+                            data[i][j] = new DataItem(2);
                         }
                     }
                     else
                     {
-                        data[i][j] = new DataItem(i, j, 0);
+                        data[i][j] = new DataItem(0);
                     }
                 }
             }
