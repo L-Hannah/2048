@@ -9,18 +9,14 @@ namespace _2048
     internal class DataItem
     {
         private int num;
-        private int x;
-        private int y;
         private DataItem? left;
         private DataItem? right;
         private DataItem? above;
         private DataItem? below;
         private bool moved = false;
-        public DataItem(int x, int y, int number)
+        public DataItem(int number)
         {
             this.num = number;
-            this.x = x;
-            this.y = y;
         }
         public int Num {
             get => num;
@@ -30,16 +26,6 @@ namespace _2048
         {
             get => moved;
             set { moved = value; }
-        }
-        public int X
-        {
-            get => x;
-            set { x = value; }
-        }
-        public int Y
-        {
-            get => y;
-            set { y = value; }
         }
         public DataItem Left
         {

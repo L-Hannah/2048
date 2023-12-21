@@ -5,7 +5,6 @@ namespace _2048
     public partial class Root : Form
     {
         List<List<DataItem>> data = new List<List<DataItem>>();
-        int[,]? buttons = null;
         Dictionary<int, Bitmap> ImageNames = new Dictionary<int, Bitmap>
         {
             {0, Properties.Resources.blank},
@@ -86,12 +85,24 @@ namespace _2048
                     {
                         for (int j=0; j<4 ; j++)
                         {
-                            bool Cont = false; //Cont is short for contine
-                            while (!Cont)
+                            for (int x = 0; x < j; x++)
                             {
-                                DataItem current = data[i][j];
-                                if (current.Moved || current.Y==0) { Cont=true; }                            
+                                DataItem current = data[i][j - x];
+                                if (current.Moved || j == 0 || current.Num == 0 || (j-x)==0) { continue; }
+                                DataItem above = data[i][j - x -1];
+                                MessageBox.Show("Current num: " + current.Num + " Above num: " + above.Num +" i: "+i+" j: "+j);
+                                if (above.Num == 0)
+                                {
+                                    data[i][j - x] = current;
+                                    data[i][j] = above;
+                                }
+                                else if (above.Num == current.Num)
+                                {
+                                    data[i][j - x].Num = current.Num * 2;
+                                    data[i][j].Num = 0;
+                                }
                             }
+                            ShowData();
                         }
                     }
                     break;
@@ -114,17 +125,17 @@ namespace _2048
                         {
                             fourcounter = true;
                             counter++;
-                            data[i][j] = new DataItem(i, j, 4);
+                            data[i][j] = new DataItem(4);
                         }
                         else
                         {
                             counter++;
-                            data[i][j] = new DataItem(i, j, 2);
+                            data[i][j] = new DataItem(2);
                         }
                     }
                     else
                     {
-                        data[i][j] = new DataItem(i, j, 0);
+                        data[i][j] = new DataItem(0);
                     }
                 }
             }
