@@ -96,10 +96,10 @@ namespace _2048
 
         private void GridMove(string direction)
         {
+            bool moved = true;
             switch (direction)
             {
                 case "up":
-                    bool moved=true; //Initial true flag
                     while (moved)
                     {
                         moved = false; //Set to false instantly so if no move, the while statement does not iterate any further
@@ -138,10 +138,9 @@ namespace _2048
                     NewTwoOrFour(0);
                     break;
                 case "down":
-                    bool moveder = true; //Initial true flag
-                    while (moveder)
+                    while (moved)
                     {
-                        moveder = false; //Set to false instantly so if no move, the while statement does not iterate any further
+                        moved = false; //Set to false instantly so if no move, the while statement does not iterate any further
                         for (int i = 0; i < 4; i++)
                         {
                             for (int j = 0; j < 3; j++) //Uses a for loop that increases to check the rows by going down
@@ -154,14 +153,14 @@ namespace _2048
                                     //Simple swap, similar to bubble sort
                                     data[i][j + 1] = current;
                                     data[i][j] = below;
-                                    moveder = true;
+                                    moved = true;
                                 }
                                 else if (below.Num == current.Num) //Number above is equal, numbers should be merged
                                 {
                                     data[i][j + 1].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
                                     data[i][j + 1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
                                     data[i][j].Num = 0;//Set current to 0 as no longer a value there
-                                    moveder = true;
+                                    moved = true;
                                 }
                             }
                         }
