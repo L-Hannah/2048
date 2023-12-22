@@ -86,6 +86,7 @@ namespace _2048
 
         private void GridMove(string direction)
         {
+            int rigged = 0; // Makes it so any number added to the grid has a 1/4 chance of being a 4 
             switch (direction)
             {
                 case "up":
