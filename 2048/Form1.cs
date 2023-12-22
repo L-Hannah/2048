@@ -24,6 +24,8 @@ namespace _2048
             {1024, Properties.Resources.onethousandtwentyfour},
             {2048, Properties.Resources.twothousandfourtyeight }
         };
+        bool won = false;
+        bool lost = false;
         public Root()
         {
             InitializeComponent();//Not my code
@@ -81,6 +83,14 @@ namespace _2048
                     //Makes the image whatever value is within the number, so if 0 it uses blank (look at dictionary "ImageNames")
                     CurrentBox.Image = ImageNames[data[i][j].Num];
                 }
+            }
+            if (won)
+            {
+                MessageBox.Show("You have won!");
+            }
+            if (lost)
+            {
+                MessageBox.Show("Nice one nerd, you lost.");
             }
         }
 
@@ -207,8 +217,26 @@ namespace _2048
             {
                 twoorfour = rigged; // If number is predetermied will set it as the rigged number
             }
-            while (true) // Loops till it can find a empty space to add a number since it always adds one each turn
+            int whileCount = 0;
+            bool lookingForEmpty = true;
+            while (lookingForEmpty) // Loops till it can find a empty space to add a number since it always adds one each turn
             {
+                whileCount++;
+                int zeroCount = 0;
+                if (whileCount>20)
+                {
+                    for (int i=0; i<4; i++)
+                    {
+                        for (int j=0; j<4; j++)
+                        {
+                            if (data[i][j].Num==0) { zeroCount++; }
+                        }
+                    }
+                    if (zeroCount==0) 
+                    {
+                        lookingForEmpty = false;
+                    }
+                }
                 int wtfy = Rand.Next(0, 4); // random y position on the grid
                 int wtfx = Rand.Next(0, 4); // random x posiiton on the grid
                 if (data[wtfx][wtfy].Num == 0) // checks if the position selected is emepty or not, if not it just reloops and randomises more coords
@@ -216,6 +244,7 @@ namespace _2048
                     data[wtfx][wtfy] = new DataItem(twoorfour); // sets the value of the position to be equal to ethier the rigged value or random choice between 2 or 4
                     break; // break dance 
                 }
+                
             }
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
