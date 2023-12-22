@@ -14,7 +14,8 @@ namespace _2048
         {
             num = number; //Sets the attribute to whatever number is passed in
         }
-        public int Num {
+        public int Num
+        {
             get => num; //When doing DataItem.Num in a different file, this will get the num value and return it
             set { num = value; } //When doing DataItem.Num=value in a different file, this will change the num value to the one given
         }
