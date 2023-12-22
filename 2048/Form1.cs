@@ -5,7 +5,7 @@ namespace _2048
     public partial class Root : Form
     {
         List<List<DataItem>> data = new List<List<DataItem>>();
-        Dictionary<int, Bitmap> ImageNames = new Dictionary<int, Bitmap>
+        Dictionary<int, Bitmap> ImageNames = new Dictionary<int, Bitmap> //Literally a dictionary of the project resources, aka the images
         {
             {0, Properties.Resources.blank},
             {2, Properties.Resources.two},
@@ -22,11 +22,13 @@ namespace _2048
         };
         public Root()
         {
-            InitializeComponent();
-            KeyPreview = true;
+            InitializeComponent();//Not my code
+            KeyPreview = true;//I dont know why this is added I think it does nothing
         }
         private void ConstructData()
         {
+            //This just makes the matrix have null items in, it makes a list of lists and sets each index (all 16 of them) to just null values.
+            //The reason for this is because doing data[x][y] wouldn't work if there was no value there so setting them to null instantly avoids any index error
             for (int i = 0; i < 4; i++)
             {
                 data.Add(
@@ -51,116 +53,154 @@ namespace _2048
         {
             for (int i = 0; i < 4; i++)
             {
-                for (int j=0; j < 4; j++)
+                for (int j = 0; j < 4; j++)
                 {
-                    PictureBox newBox = new()
+                    PictureBox newBox = new() //New picturebox, options below
                     {
-                        Name = i.ToString() + j.ToString(),
-                        Image = Properties.Resources.blank,
-                        Location = new Point(i * 120 +13, j * 120 +13),
-                        Size = new Size(112, 112)
+                        Name = i.ToString() + j.ToString(), //Sets a name for the buttons to be accessed with later
+                        Image = Properties.Resources.blank, //Uses blank image by default
+                        Location = new Point(i * 120 + 13, j * 120 + 13), //This was literally trial and error but it does work lmao
+                        Size = new Size(112, 112) //Also trial and error
                     };
-                    this.Controls.Add(newBox);
-                    newBox.BringToFront();
+                    this.Controls.Add(newBox); //Adds it to the controls so the form includes it
+                    newBox.BringToFront(); //Shows the picturebox above the main window
                 }
             }
         }
         private void ShowData()
         {
-            for (int i =0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    PictureBox CurrentBox = (PictureBox)Controls[i.ToString() + j.ToString()];
+                    PictureBox CurrentBox = (PictureBox)Controls[i.ToString() + j.ToString()]; //Gets picturebox using the i and j for the name
+                    //Makes the image whatever value is within the number, so if 0 it uses blank (look at dictionary "ImageNames")
                     CurrentBox.Image = ImageNames[data[i][j].Num];
                 }
             }
         }
 
-        private void Move(string direction)
+        private void GridMove(string direction)
         {
+            int rigged = 0; // Makes it so any number added to the grid has a 1/4 chance of being a 4 
             switch (direction)
             {
                 case "up":
-                    bool moved=true;
+                    bool moved = true; //Initial true flag
                     while (moved)
                     {
-                        moved = false;
+                        moved = false; //Set to false instantly so if no move, the while statement does not iterate any further
                         for (int i = 0; i < 4; i++)
                         {
-                            for (int j = 3; j > -1; j--)
+                            for (int j = 3; j > -1; j--) //Uses a for loop that decreases to check the rows by going up
                             {
-                                DataItem current = data[i][j];
-                                if (current.Moved || j == 0 || current.Num == 0) { continue; }
-                                DataItem above = data[i][j - 1];
-                                if (above.Num == 0)
+                                DataItem current = data[i][j]; //Gets current DataItem
+                                if (current.Moved || j == 0 || current.Num == 0) { continue; } //Random checks to avoid bugs.
+                                DataItem above = data[i][j - 1]; //Gets the DataItem above the current (Must be done after above statement otherwise index error)
+                                if (above.Num == 0) //Number above is 0, slot is empty.
                                 {
+                                    //Simple swap, similar to bubble sort
                                     data[i][j - 1] = current;
                                     data[i][j] = above;
                                     moved = true;
                                 }
-                                else if (above.Num == current.Num)
+                                else if (above.Num == current.Num) //Number above is equal, numbers should be merged
                                 {
-                                    data[i][j - 1].Num = current.Num * 2;
-                                    data[i][j].Num = 0;
+                                    data[i][j - 1].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
+                                    data[i][j - 1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move
+                                    data[i][j].Num = 0;//Set current to 0 as no longer a value there
+                                    moved = true;
+                                }
+                            }
+                        }
+                    }
+                    ShowData(); //Update images
+                    break;
+                case "down":
+                    NewTwoOrFour(rigged);
+                    ShowData();
+                    break;
+                /*case "down": //(DOESNT CURRENTLY WORK WTF) (cry about it)
+                    moved = true;
+                    while (moved)
+                    {
+                        moved=false;
+                        for (int i = 0; i < 4; i++)
+                        {
+                            for (int j = 0; j < 4; j++)
+                            {
+                                DataItem current = data[i][j];
+                                if (current.Moved || j == 4 || current.Num == 0) { continue; }
+                                DataItem below = data[i][j + 1];
+                                if (below.Num==0)
+                                {
+                                    data[i][i + 1] = current;
+                                    data[i][j + 1] = below;
+                                    moved = true;
+                                }
+                                else if (below.Num== current.Num)
+                                {
+                                    data[i][j+1].Num=current.Num * 2;
+                                    data[i][j+1].Moved = true;
+                                    data[i][j].Num=0;
                                     moved = true;
                                 }
                             }
                         }
                     }
                     ShowData();
-                    break;
+                    break;*/
                 default:
                     break;
             }
         }
         private void CreateStartingData()
         {
-            var Rand = new Random();
-            int counter = 0;
-            bool fourcounter = false;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
             {
-                for (int j = 0; j < 4; j++)
+                for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
                 {
-                    if (Rand.Next(2) == 1 && counter < 2)
-                    {
-                        if (Rand.Next(2) == 1 && !fourcounter)
-                        {
-                            fourcounter = true;
-                            counter++;
-                            data[i][j] = new DataItem(4);
-                        }
-                        else
-                        {
-                            counter++;
-                            data[i][j] = new DataItem(2);
-                        }
-                    }
-                    else
-                    {
-                        data[i][j] = new DataItem(0);
-                    }
+                    data[i][j] = new DataItem(0); //Makes a DataItem and sets the value to 0
+                }
+            }
+            NewTwoOrFour(2); // Adds a number 2 to the grid, rigging it by putting (2)
+            NewTwoOrFour(4); // Adds a number 2 to the grid, rigging it by putting (4)
+        }
+        private void NewTwoOrFour(int rigged) // Takes in a interger which will be the number placed on the grid, however if the number is 0 it will randomise between a 2 or 4
+        {
+            int twoorfour = 0;
+            var Rand = new Random(); //Built in random class
+            if (rigged == 0) // Checks if it is a random number we are adding or predetermied 
+            {
+                int twoorfourrandomiser = Rand.Next(1, 5); // random chance of it being a 4, rand is being weird so idfk if its a 1/4 chance but it looks right enough
+                if (twoorfourrandomiser < 4)
+                {
+                    twoorfour = 2;
+                }
+                else
+                {
+                    twoorfour = 4;
+                }
+            }
+            else
+            {
+                twoorfour = rigged; // If number is predetermied will set it as the rigged number
+            }
+            while (true) // Loops till it can find a empty space to add a number since it always adds one each turn
+            {
+                int wtfy = Rand.Next(0, 4); // random y position on the grid
+                int wtfx = Rand.Next(0, 4); // random x posiiton on the grid
+                if (data[wtfx][wtfy].Num == 0) // checks if the position selected is emepty or not, if not it just reloops and randomises more coords
+                {
+                    data[wtfx][wtfy] = new DataItem(twoorfour); // sets the value of the position to be equal to ethier the rigged value or random choice between 2 or 4
+                    break; // break dance 
                 }
             }
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            int[] Arrows = { 37, 38, 39, 40 };
-            if (!Arrows.Contains(e.KeyValue)) { return; }
-
-            //Loop below is used for debugging to show the data in a string format
-            /*for (int i = 0; i<4 ; i++)
-            {
-                for (int j = 0; j < 4 ; j++)
-                {
-                    if (data[i][j]!=null) 
-                    {
-                        string test = "X: " + data[i][j].X.ToString() + " Y: " + data[i][j].Y.ToString() + "\nValue: "+data[i][j].Num.ToString();
-                        MessageBox.Show(test); 
-                    }
-                }
-            }*/
+            int[] Arrows = { 37, 38, 39, 40 }; //Got these numbers through figuring it out
+            if (!Arrows.Contains(e.KeyValue)) { return; } //If not an arrow key don't bother
             switch (e.KeyValue)
             {
                 case (37):
@@ -168,34 +208,23 @@ namespace _2048
                     break;
                 case (38):
                     //Up arrow
-                    Move("up");
+                    GridMove("up");
                     break;
                 case (39):
                     //Right arrow
                     break;
                 case (40):
                     //Down arrow
+                    GridMove("down");
                     break;
                 default:
                     //Literally shouldn't happen
                     break;
             }
-            UpdateGrid();
         }
-        private void UpdateGrid()
-        {
-            //This function should access the multidimensional array and then use this to update the image widgets
-            for (int i=0;i<4;i++)
-            {
-                for (int j=0;j<4;j++) 
-                {
-                    
-                }
-            }
-        }
-
         private void Form1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
+            //Quite unnecessary
             return;
             /*switch (e.KeyCode)
             {

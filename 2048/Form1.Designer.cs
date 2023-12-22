@@ -29,22 +29,20 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Root));
-            SuspendLayout();
+            this.SuspendLayout();
             // 
             // Root
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
-            ClientSize = new Size(499, 497);
-            MaximumSize = new Size(515, 536);
-            MinimumSize = new Size(502, 500);
-            Name = "Root";
-            Text = "2048";
-            Load += Form1_Load;
-            KeyDown += Form1_KeyDown;
-            PreviewKeyDown += Form1_PreviewKeyDown;
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.ClientSize = new System.Drawing.Size(499, 497);
+            this.MaximumSize = new System.Drawing.Size(515, 536);
+            this.MinimumSize = new System.Drawing.Size(502, 500);
+            this.Name = "Root";
+            this.Text = "2048";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
