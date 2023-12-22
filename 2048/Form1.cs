@@ -1,4 +1,8 @@
 using System.Diagnostics.Metrics;
+using System.Globalization;
+using System;
+
+
 
 namespace _2048
 {
@@ -28,7 +32,7 @@ namespace _2048
         private void ConstructData()
         {
             //This just makes the matrix have null items in, it makes a list of lists and sets each index (all 16 of them) to just null values.
-            //The reason for this is because doing data[x][y] wouldn't work if there was no value there so setting them to null instantly avoids any index errors.
+            //The reason for this is because doing data[x][y] wouldn't work if there was no value there so setting them to null instantly avoids any index error
             for (int i = 0; i < 4; i++)
             {
                 data.Add(
@@ -91,7 +95,7 @@ namespace _2048
                         moved = false; //Set to false instantly so if no move, the while statement does not iterate any further
                         for (int i = 0; i < 4; i++)
                         {
-                            for (int j = 3; j > -1; j--) //Uses a  for loop that decreases to check the rows by going up
+                            for (int j = 3; j > -1; j--) //Uses a for loop that decreases to check the rows by going up
                             {
                                 DataItem current = data[i][j]; //Gets current DataItem
                                 if (current.Moved || j == 0 || current.Num == 0) { continue; } //Random checks to avoid bugs.
@@ -106,76 +110,112 @@ namespace _2048
                                 else if (above.Num == current.Num) //Number above is equal, numbers should be merged
                                 {
                                     data[i][j - 1].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
-                                    data[i][j-1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move
+                                    data[i][j-1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
                                     data[i][j].Num = 0;//Set current to 0 as no longer a value there
                                     moved = true;
                                 }
                             }
                         }
                     }
-                    ShowData(); //Update images
-                    break;
-                /*case "down": //(DOESNT CURRENTLY WORK WTF)
-                    moved = true;
-                    while (moved)
+                    for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
                     {
-                        moved=false;
+                        for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
+                        {
+                            data[i][j].Moved = false; //does the impossible and allows the title to move agian (not clickbait)
+                        }
+                    }
+                    ShowData(); //Update images
+                    NewTwoOrFour(256);
+                    break;
+                case "down":
+                    bool moveder = true; //Initial true flag
+                    while (moveder)
+                    {
+                        moveder = false; //Set to false instantly so if no move, the while statement does not iterate any further
                         for (int i = 0; i < 4; i++)
                         {
-                            for (int j = 0; j < 4; j++)
+                            for (int j = 0; j < 3; j++) //Uses a for loop that increases to check the rows by going down
                             {
-                                DataItem current = data[i][j];
-                                if (current.Moved || j == 4 || current.Num == 0) { continue; }
-                                DataItem below = data[i][j + 1];
-                                if (below.Num==0)
+                                DataItem current = data[i][j]; //Gets current DataItem
+                                if (current.Moved || j == 4 || current.Num == 0) { continue; } //Random checks to avoid bugs.
+                                DataItem below = data[i][j + 1]; //Gets the DataItem below the current (Must be done after above statement otherwise index error)
+                                if (below.Num == 0) //Number above is 0, slot is empty.
                                 {
-                                    data[i][i + 1] = current;
-                                    data[i][j + 1] = below;
-                                    moved = true;
+                                    //Simple swap, similar to bubble sort
+                                    data[i][j + 1] = current;
+                                    data[i][j] = below;
+                                    moveder = true;
                                 }
-                                else if (below.Num== current.Num)
+                                else if (below.Num == current.Num) //Number above is equal, numbers should be merged
                                 {
-                                    data[i][j+1].Num=current.Num * 2;
-                                    data[i][j+1].Moved = true;
-                                    data[i][j].Num=0;
-                                    moved = true;
+                                    data[i][j + 1].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
+                                    data[i][j + 1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
+                                    data[i][j].Num = 0;//Set current to 0 as no longer a value there
+                                    moveder = true;
                                 }
                             }
                         }
                     }
                     ShowData();
-                    break;*/
+                    for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
+                    {
+                        for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
+                        {
+                            data[i][j].Moved = false; //does the impossible and allows the title to move agian (not clickbait)
+                        }
+                    }
+                    NewTwoOrFour(256);
+                    ShowData();
+                    break;
+                case "left":
+                    
+                    NewTwoOrFour(0);
+                    ShowData();
+                    break;
                 default:
                     break;
             }
         }
         private void CreateStartingData()
         {
-            var Rand = new Random(); //Built in random class
-            int counter = 0; //Counter for counting number of starting data
-            bool fourcounter = false; //Bool flag for fours as only one four at start is possible
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
             {
-                for (int j = 0; j < 4; j++)
+                for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
                 {
-                    if (Rand.Next(2) == 1 && counter < 2) //If there arent two values yet, and if random value is 1, we do this
-                    {
-                        if (Rand.Next(2) == 1 && !fourcounter) //Gets another random value and checks if its 1 and if theres no four already
-                        {
-                            fourcounter = true; //Set flag to true as one four is placed
-                            counter++; //Counter iterated
-                            data[i][j] = new DataItem(4); //Makes a DataItem and sets the value to 4
-                        }
-                        else
-                        {
-                            counter++; //Counter iterated
-                            data[i][j] = new DataItem(2); //Makes a DataItem and sets the value to 2
-                        }
-                    }
-                    else
-                    {
-                        data[i][j] = new DataItem(0); //Makes a DataItem and sets the value to 0
-                    }
+                    data[i][j] = new DataItem(0); //Makes a DataItem and sets the value to 0
+                }
+            }
+            NewTwoOrFour(2); // Adds a number 2 to the grid, rigging it by putting (2)
+            NewTwoOrFour(4); // Adds a number 2 to the grid, rigging it by putting (4)
+        }
+        private void NewTwoOrFour(int rigged) // Takes in a interger which will be the number placed on the grid, however if the number is 0 it will randomise between a 2 or 4
+        {
+            int twoorfour = 0; 
+            var Rand = new Random(); //Built in random class
+            if (rigged==0) // Checks if it is a random number we are adding or predetermied 
+            {
+                int twoorfourrandomiser = Rand.Next(1, 5); // random chance of it being a 4, rand is being weird so idfk if its a 1/4 chance but it looks right enough
+                if (twoorfourrandomiser < 4)
+                {
+                    twoorfour = 2;
+                }
+                else
+                {
+                    twoorfour = 4;
+                }
+            }
+            else
+            {
+                twoorfour = rigged; // If number is predetermied will set it as the rigged number
+            }
+            while (true) // Loops till it can find a empty space to add a number since it always adds one each turn
+            {
+                int wtfy = Rand.Next(0, 4); // random y position on the grid
+                int wtfx = Rand.Next(0, 4); // random x posiiton on the grid
+                if (data[wtfx][wtfy].Num == 0) // checks if the position selected is emepty or not, if not it just reloops and randomises more coords
+                {
+                    data[wtfx][wtfy] = new DataItem(twoorfour); // sets the value of the position to be equal to ethier the rigged value or random choice between 2 or 4
+                    break; // break dance 
                 }
             }
         }
@@ -187,6 +227,7 @@ namespace _2048
             {
                 case (37):
                     //Left arrow
+                    GridMove("left");
                     break;
                 case (38):
                     //Up arrow
