@@ -176,7 +176,78 @@ namespace _2048
                     ShowData();
                     break;
                 case "left":
-                    
+                    while (moved)
+                    {
+                        moved = false; //Set to false instantly so if no move, the while statement does not iterate any further
+                        for (int j = 0; j < 4; j++)
+                        {
+                            for (int i = 3; i > 0 ; i--) //Uses a for loop that increases to check the rows by going down
+                            {
+                                DataItem current = data[i][j]; //Gets current DataItem
+                                if (current.Moved || i == 0 || current.Num == 0) { continue; } //Random checks to avoid bugs.
+                                DataItem left = data[i-1][j]; //Gets the DataItem to the left of the current (Must be done after above statement otherwise index error)
+                                if (left.Num == 0) //Number is 0, slot is empty.
+                                {
+                                    //Simple swap, similar to bubble sort
+                                    data[i-1][j] = current;
+                                    data[i][j] = left;
+                                    moved = true;
+                                }
+                                else if (left.Num == current.Num) //Number above is equal, numbers should be merged
+                                {
+                                    data[i - 1][j].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
+                                    data[i-1][j].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
+                                    data[i][j].Num = 0;//Set current to 0 as no longer a value there
+                                    moved = true;
+                                }
+                            }
+                        }
+                    }
+                    for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
+                    {
+                        for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
+                        {
+                            data[i][j].Moved = false; //does the impossible and allows the title to move agian (not clickbait)
+                        }
+                    }
+                    NewTwoOrFour(0);
+                    ShowData();
+                    break;
+                case "right":
+                    while (moved)
+                    {
+                        moved = false; //Set to false instantly so if no move, the while statement does not iterate any further
+                        for (int j = 0; j < 4; j++)
+                        {
+                            for (int i = 0; i < 3; i++) //Uses a for loop that increases to check the rows by going down
+                            {
+                                DataItem current = data[i][j]; //Gets current DataItem
+                                if (current.Moved || i == 4 || current.Num == 0) { continue; } //Random checks to avoid bugs.
+                                DataItem right = data[i + 1][j]; //Gets the DataItem to the right of the current (Must be done after above statement otherwise index error)
+                                if (right.Num == 0) //Number is 0, slot is empty.
+                                {
+                                    //Simple swap, similar to bubble sort
+                                    data[i + 1][j] = current;
+                                    data[i][j] = right;
+                                    moved = true;
+                                }
+                                else if (right.Num == current.Num) //Number above is equal, numbers should be merged
+                                {
+                                    data[i + 1][j].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
+                                    data[i + 1][j].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
+                                    data[i][j].Num = 0;//Set current to 0 as no longer a value there
+                                    moved = true;
+                                }
+                            }
+                        }
+                    }
+                    for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
+                    {
+                        for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
+                        {
+                            data[i][j].Moved = false; //does the impossible and allows the title to move agian (not clickbait)
+                        }
+                    }
                     NewTwoOrFour(0);
                     ShowData();
                     break;
@@ -262,6 +333,7 @@ namespace _2048
                     break;
                 case (39):
                     //Right arrow
+                    GridMove("right");
                     break;
                 case (40):
                     //Down arrow
