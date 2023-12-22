@@ -57,13 +57,13 @@ namespace _2048
         {
             for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j < 4; j++)
+                for (int j=0; j < 4; j++)
                 {
                     PictureBox newBox = new() //New picturebox, options below
                     {
                         Name = i.ToString() + j.ToString(), //Sets a name for the buttons to be accessed with later
                         Image = Properties.Resources.blank, //Uses blank image by default
-                        Location = new Point(i * 120 + 13, j * 120 + 13), //This was literally trial and error but it does work lmao
+                        Location = new Point(i * 120 +13, j * 120 +13), //This was literally trial and error but it does work lmao
                         Size = new Size(112, 112) //Also trial and error
                     };
                     this.Controls.Add(newBox); //Adds it to the controls so the form includes it
@@ -73,7 +73,7 @@ namespace _2048
         }
         private void ShowData()
         {
-            for (int i = 0; i < 4; i++)
+            for (int i =0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
@@ -86,11 +86,10 @@ namespace _2048
 
         private void GridMove(string direction)
         {
-            int rigged = 0; // Makes it so any number added to the grid has a 1/4 chance of being a 4 
             switch (direction)
             {
                 case "up":
-                    bool moved = true; //Initial true flag
+                    bool moved=true; //Initial true flag
                     while (moved)
                     {
                         moved = false; //Set to false instantly so if no move, the while statement does not iterate any further
@@ -111,7 +110,7 @@ namespace _2048
                                 else if (above.Num == current.Num) //Number above is equal, numbers should be merged
                                 {
                                     data[i][j - 1].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
-                                    data[i][j - 1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
+                                    data[i][j-1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
                                     data[i][j].Num = 0;//Set current to 0 as no longer a value there
                                     moved = true;
                                 }
@@ -168,7 +167,7 @@ namespace _2048
                     ShowData();
                     break;
                 case "left":
-
+                    
                     NewTwoOrFour(0);
                     ShowData();
                     break;
@@ -190,9 +189,9 @@ namespace _2048
         }
         private void NewTwoOrFour(int rigged) // Takes in a interger which will be the number placed on the grid, however if the number is 0 it will randomise between a 2 or 4
         {
-            int twoorfour = 0;
+            int twoorfour = 0; 
             var Rand = new Random(); //Built in random class
-            if (rigged == 0) // Checks if it is a random number we are adding or predetermied 
+            if (rigged==0) // Checks if it is a random number we are adding or predetermied 
             {
                 int twoorfourrandomiser = Rand.Next(1, 5); // random chance of it being a 4, rand is being weird so idfk if its a 1/4 chance but it looks right enough
                 if (twoorfourrandomiser < 4)
