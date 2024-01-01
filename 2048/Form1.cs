@@ -108,7 +108,7 @@ namespace _2048
                             for (int j = 3; j > -1; j--) //Uses a for loop that decreases to check the rows by going up
                             {
                                 DataItem current = data[i][j]; //Gets current DataItem
-                                if (current.Moved || j == 0 || current.Num == 0) { continue; } //Random checks to avoid bugs.
+                                if (j == 0 || current.Num == 0) { continue; } //Random checks to avoid bugs.
                                 DataItem above = data[i][j - 1]; //Gets the DataItem above the current (Must be done after above statement otherwise index error)
                                 if (above.Num == 0) //Number above is 0, slot is empty.
                                 {
@@ -117,7 +117,7 @@ namespace _2048
                                     data[i][j] = above;
                                     moved = true;
                                 }
-                                else if (above.Num == current.Num) //Number above is equal, numbers should be merged
+                                else if (above.Num == current.Num && !current.Moved) //Number above is equal, numbers should be merged
                                 {
                                     data[i][j - 1].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
                                     data[i][j-1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
@@ -146,7 +146,7 @@ namespace _2048
                             for (int j = 0; j < 3; j++) //Uses a for loop that increases to check the rows by going down
                             {
                                 DataItem current = data[i][j]; //Gets current DataItem
-                                if (current.Moved || j == 4 || current.Num == 0) { continue; } //Random checks to avoid bugs.
+                                if (j == 4 || current.Num == 0) { continue; } //Random checks to avoid bugs.
                                 DataItem below = data[i][j + 1]; //Gets the DataItem below the current (Must be done after above statement otherwise index error)
                                 if (below.Num == 0) //Number above is 0, slot is empty.
                                 {
@@ -155,7 +155,7 @@ namespace _2048
                                     data[i][j] = below;
                                     moved = true;
                                 }
-                                else if (below.Num == current.Num) //Number above is equal, numbers should be merged
+                                else if (below.Num == current.Num && !current.Moved) //Number above is equal, numbers should be merged
                                 {
                                     data[i][j + 1].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
                                     data[i][j + 1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
@@ -184,7 +184,7 @@ namespace _2048
                             for (int i = 3; i > 0 ; i--) //Uses a for loop that increases to check the rows by going down
                             {
                                 DataItem current = data[i][j]; //Gets current DataItem
-                                if (current.Moved || i == 0 || current.Num == 0) { continue; } //Random checks to avoid bugs.
+                                if (i == 0 || current.Num == 0) { continue; } //Random checks to avoid bugs.
                                 DataItem left = data[i-1][j]; //Gets the DataItem to the left of the current (Must be done after above statement otherwise index error)
                                 if (left.Num == 0) //Number is 0, slot is empty.
                                 {
@@ -193,7 +193,7 @@ namespace _2048
                                     data[i][j] = left;
                                     moved = true;
                                 }
-                                else if (left.Num == current.Num) //Number above is equal, numbers should be merged
+                                else if (left.Num == current.Num && !current.Moved) //Number above is equal, numbers should be merged
                                 {
                                     data[i - 1][j].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
                                     data[i-1][j].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
@@ -222,7 +222,7 @@ namespace _2048
                             for (int i = 0; i < 3; i++) //Uses a for loop that increases to check the rows by going down
                             {
                                 DataItem current = data[i][j]; //Gets current DataItem
-                                if (current.Moved || i == 4 || current.Num == 0) { continue; } //Random checks to avoid bugs.
+                                if (i == 4 || current.Num == 0) { continue; } //Random checks to avoid bugs.
                                 DataItem right = data[i + 1][j]; //Gets the DataItem to the right of the current (Must be done after above statement otherwise index error)
                                 if (right.Num == 0) //Number is 0, slot is empty.
                                 {
@@ -231,7 +231,7 @@ namespace _2048
                                     data[i][j] = right;
                                     moved = true;
                                 }
-                                else if (right.Num == current.Num) //Number above is equal, numbers should be merged
+                                else if (right.Num == current.Num && !current.Moved) //Number above is equal, numbers should be merged
                                 {
                                     data[i + 1][j].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
                                     data[i + 1][j].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
