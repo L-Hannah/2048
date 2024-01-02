@@ -127,13 +127,6 @@ namespace _2048
                             }
                         }
                     }
-                    for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
-                    {
-                        for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
-                        {
-                            data[i][j].Moved = false; //does the impossible and allows the title to move agian (not clickbait)
-                        }
-                    }
                     ShowData(); //Update images
                     NewTwoOrFour(0);
                     break;
@@ -163,13 +156,6 @@ namespace _2048
                                     moved = true;
                                 }
                             }
-                        }
-                    }
-                    for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
-                    {
-                        for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
-                        {
-                            data[i][j].Moved = false; //does the impossible and allows the title to move agian (not clickbait)
                         }
                     }
                     NewTwoOrFour(0);
@@ -203,14 +189,7 @@ namespace _2048
                             }
                         }
                     }
-                    for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
-                    {
-                        for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
-                        {
-                            data[i][j].Moved = false; //does the impossible and allows the title to move agian (not clickbait)
-                        }
-                    }
-                    NewTwoOrFour(0);
+                    NewTwoOrFour(1024);
                     ShowData();
                     break;
                 case "right":
@@ -241,18 +220,26 @@ namespace _2048
                             }
                         }
                     }
-                    for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
-                    {
-                        for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
-                        {
-                            data[i][j].Moved = false; //does the impossible and allows the title to move agian (not clickbait)
-                        }
-                    }
                     NewTwoOrFour(0);
                     ShowData();
                     break;
                 default:
                     break;
+                
+            }
+            for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
+            {
+                for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
+                {
+                    if (data[i][j].Moved == true)
+                    {
+                        if (data[i][j].Num == 2048)
+                        {
+                            MessageBox.Show("You have won!");
+                        }
+                        data[i][j].Moved = false; //does the impossible and allows the title to move agian (not clickbait)
+                    }
+                }
             }
         }
         private void CreateStartingData()
