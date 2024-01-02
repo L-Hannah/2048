@@ -189,7 +189,7 @@ namespace _2048
                             }
                         }
                     }
-                    NewTwoOrFour(1024);
+                    NewTwoOrFour(0);
                     ShowData();
                     break;
                 case "right":
