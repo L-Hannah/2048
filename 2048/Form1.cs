@@ -1,6 +1,8 @@
 using System.Diagnostics.Metrics;
 using System.Globalization;
 using System;
+using System.Threading.Tasks;
+
 
 
 
@@ -94,7 +96,7 @@ namespace _2048
             }
         }
 
-        private void GridMove(string direction)
+        async private void GridMove(string direction)
         {
             bool moved = true;
             int moves = 0;
@@ -225,9 +227,6 @@ namespace _2048
                 default:
                     break;
             }
-            ShowData();
-            NewTwoOrFour(0);
-            ShowData();
             for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
             {
                 for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
@@ -242,6 +241,10 @@ namespace _2048
                     }
                 }
             }
+            ShowData();
+            await Task.Delay(50);
+            NewTwoOrFour(0);
+            ShowData();
         }
         private void CreateStartingData()
         {
