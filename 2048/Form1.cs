@@ -26,8 +26,10 @@ namespace _2048
             {1024, Properties.Resources.onethousandtwentyfour},
             {2048, Properties.Resources.twothousandfourtyeight }
         };
-        bool won = false;
-        bool lost = false;
+        bool leftLost = false;
+        bool rightLost = false;
+        bool upLost = false;
+        bool downLost = false;
         public Root()
         {
             InitializeComponent();//Not my code
@@ -86,17 +88,9 @@ namespace _2048
                     CurrentBox.Image = ImageNames[data[i][j].Num];
                 }
             }
-            if (won)
-            {
-                MessageBox.Show("You have won!");
-            }
-            if (lost)
-            {
-                MessageBox.Show("Nice one nerd, you lost.");
-            }
         }
 
-        async private void GridMove(string direction)
+        async private void GridMove(string direction, bool theory)
         {
             bool moved = true;
             int moves = 0;
@@ -115,19 +109,33 @@ namespace _2048
                                 DataItem above = data[i][j - 1]; //Gets the DataItem above the current (Must be done after above statement otherwise index error)
                                 if (above.Num == 0) //Number above is 0, slot is empty.
                                 {
-                                    //Simple swap, similar to bubble sort
-                                    data[i][j - 1] = current;
-                                    data[i][j] = above;
-                                    moved = true;
-                                    moves++;
+                                    if (!theory)
+                                    {
+                                        //Simple swap, similar to bubble sort
+                                        data[i][j - 1] = current;
+                                        data[i][j] = above;
+                                        moved = true;
+                                    }
+                                    else
+                                    {
+                                        moves++;
+                                        break;
+                                    }
                                 }
                                 else if (above.Num == current.Num && !current.Moved && !above.Moved) //Number above is equal, numbers should be merged
                                 {
-                                    data[i][j - 1].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
-                                    data[i][j-1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
-                                    data[i][j].Num = 0;//Set current to 0 as no longer a value there
-                                    moved = true;
-                                    moves++;
+                                    if (!theory)
+                                    {
+                                        data[i][j - 1].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
+                                        data[i][j - 1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
+                                        data[i][j].Num = 0;//Set current to 0 as no longer a value there
+                                        moved = true;
+                                    }
+                                    else
+                                    {
+                                        moves++;
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -146,19 +154,32 @@ namespace _2048
                                 DataItem below = data[i][j + 1]; //Gets the DataItem below the current (Must be done after above statement otherwise index error)
                                 if (below.Num == 0) //Number above is 0, slot is empty.
                                 {
-                                    //Simple swap, similar to bubble sort
-                                    data[i][j + 1] = current;
-                                    data[i][j] = below;
-                                    moved = true;
-                                    moves++;
+                                    if (!theory)
+                                    {
+                                        //Simple swap, similar to bubble sort
+                                        data[i][j + 1] = current;
+                                        data[i][j] = below;
+                                        moved = true;
+                                    }
+                                    else 
+                                    {
+                                        moves++;
+                                        break;
+                                    }
                                 }
                                 else if (below.Num == current.Num && !current.Moved && !below.Moved) //Number above is equal, numbers should be merged
                                 {
-                                    data[i][j + 1].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
-                                    data[i][j + 1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
-                                    data[i][j].Num = 0;//Set current to 0 as no longer a value there
-                                    moved = true;
-                                    moves++;
+                                    if (!theory)
+                                    {
+                                        data[i][j + 1].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
+                                        data[i][j + 1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
+                                        data[i][j].Num = 0;//Set current to 0 as no longer a value there
+                                        moved = true;
+                                    } else
+                                    {
+                                        moves++;
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -177,19 +198,31 @@ namespace _2048
                                 DataItem left = data[i-1][j]; //Gets the DataItem to the left of the current (Must be done after above statement otherwise index error)
                                 if (left.Num == 0) //Number is 0, slot is empty.
                                 {
-                                    //Simple swap, similar to bubble sort
-                                    data[i-1][j] = current;
-                                    data[i][j] = left;
-                                    moved = true;
-                                    moves++;
+                                    if (!theory)
+                                    {
+                                        //Simple swap, similar to bubble sort
+                                        data[i - 1][j] = current;
+                                        data[i][j] = left;
+                                        moved = true;
+                                    } else
+                                    {
+                                        moves++;
+                                        break;
+                                    }
                                 }
                                 else if (left.Num == current.Num && !current.Moved && !left.Moved) //Number above is equal, numbers should be merged
                                 {
-                                    data[i-1][j].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
-                                    data[i-1][j].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
-                                    data[i][j].Num = 0;//Set current to 0 as no longer a value there
-                                    moved = true;
-                                    moves++;
+                                    if (!theory)
+                                    {
+                                        data[i - 1][j].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
+                                        data[i - 1][j].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
+                                        data[i][j].Num = 0;//Set current to 0 as no longer a value there
+                                        moved = true;
+                                    } else
+                                    {
+                                        moves++;
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -208,17 +241,31 @@ namespace _2048
                                 DataItem right = data[i + 1][j]; //Gets the DataItem to the right of the current (Must be done after above statement otherwise index error)
                                 if (right.Num == 0) //Number is 0, slot is empty.
                                 {
-                                    //Simple swap, similar to bubble sort
-                                    data[i + 1][j] = current;
-                                    data[i][j] = right;
-                                    moved = true;
+                                    if (!theory)
+                                    {
+                                        //Simple swap, similar to bubble sort
+                                        data[i + 1][j] = current;
+                                        data[i][j] = right;
+                                        moved = true;
+                                    } else
+                                    {
+                                        moves++;
+                                        break;
+                                    }
                                 }
                                 else if (right.Num == current.Num && !current.Moved && !right.Moved) //Number above is equal, numbers should be merged
                                 {
-                                    data[i + 1][j].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
-                                    data[i + 1][j].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
-                                    data[i][j].Num = 0;//Set current to 0 as no longer a value there
-                                    moved = true;
+                                    if (!theory)
+                                    {
+                                        data[i + 1][j].Num = current.Num * 2; //Multiplied by 2 as addition unnecessary
+                                        data[i + 1][j].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
+                                        data[i][j].Num = 0;//Set current to 0 as no longer a value there
+                                        moved = true;
+                                    } else
+                                    {
+                                        moves++;
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -227,24 +274,61 @@ namespace _2048
                 default:
                     break;
             }
-            for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
+            if (!theory)
             {
-                for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
+                for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
                 {
-                    if (data[i][j].Moved == true)
+                    for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
                     {
-                        if (data[i][j].Num == 2048)
+                        if (data[i][j].Moved == true)
                         {
-                            MessageBox.Show("You have won!");
+                            if (data[i][j].Num == 2048)
+                            {
+                                MessageBox.Show("You have won!");
+                            }
+                            data[i][j].Moved = false; //does the impossible and allows the title to move agian (not clickbait)
                         }
-                        data[i][j].Moved = false; //does the impossible and allows the title to move agian (not clickbait)
                     }
                 }
+                ShowData();
+                await Task.Delay(50);
+                NewTwoOrFour(0);
+                ShowData();
+                upLost = false;
+                downLost = false;
+                leftLost = false;
+                rightLost = false;
+                GridMove("left", true);
+                GridMove("right",true);
+                GridMove("up", true);
+                GridMove("down", true);
+            } else
+            {
+                if (moves==0)
+                {
+                    switch (direction) 
+                    {
+                        case "up":
+                            upLost = true;
+                            break;
+                        case "down":
+                            downLost = true;
+                            break;
+                        case "left":
+                            leftLost = true;
+                            break;
+                        case "right":
+                            rightLost = true;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (leftLost&&rightLost&&upLost&&downLost)
+                {
+                    MessageBox.Show("Nice one nerd, you lost.");
+                }
             }
-            ShowData();
-            await Task.Delay(50);
-            NewTwoOrFour(0);
-            ShowData();
         }
         private void CreateStartingData()
         {
@@ -316,19 +400,19 @@ namespace _2048
             {
                 case (37):
                     //Left arrow
-                    GridMove("left");
+                    GridMove("left",false);
                     break;
                 case (38):
                     //Up arrow
-                    GridMove("up");
+                    GridMove("up", false);
                     break;
                 case (39):
                     //Right arrow
-                    GridMove("right");
+                    GridMove("right", false);
                     break;
                 case (40):
                     //Down arrow
-                    GridMove("down");
+                    GridMove("down" , false);
                     break;
                 default:
                     //Literally shouldn't happen
