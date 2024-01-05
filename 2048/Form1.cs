@@ -97,6 +97,7 @@ namespace _2048
         private void GridMove(string direction)
         {
             bool moved = true;
+            int moves = 0;
             switch (direction)
             {
                 case "up":
@@ -116,6 +117,7 @@ namespace _2048
                                     data[i][j - 1] = current;
                                     data[i][j] = above;
                                     moved = true;
+                                    moves++;
                                 }
                                 else if (above.Num == current.Num && !current.Moved && !above.Moved) //Number above is equal, numbers should be merged
                                 {
@@ -123,12 +125,11 @@ namespace _2048
                                     data[i][j-1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
                                     data[i][j].Num = 0;//Set current to 0 as no longer a value there
                                     moved = true;
+                                    moves++;
                                 }
                             }
                         }
                     }
-                    ShowData(); //Update images
-                    NewTwoOrFour(0);
                     break;
                 case "down":
                     while (moved)
@@ -147,6 +148,7 @@ namespace _2048
                                     data[i][j + 1] = current;
                                     data[i][j] = below;
                                     moved = true;
+                                    moves++;
                                 }
                                 else if (below.Num == current.Num && !current.Moved && !below.Moved) //Number above is equal, numbers should be merged
                                 {
@@ -154,12 +156,11 @@ namespace _2048
                                     data[i][j + 1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
                                     data[i][j].Num = 0;//Set current to 0 as no longer a value there
                                     moved = true;
+                                    moves++;
                                 }
                             }
                         }
                     }
-                    NewTwoOrFour(0);
-                    ShowData();
                     break;
                 case "left":
                     while (moved)
@@ -178,6 +179,7 @@ namespace _2048
                                     data[i-1][j] = current;
                                     data[i][j] = left;
                                     moved = true;
+                                    moves++;
                                 }
                                 else if (left.Num == current.Num && !current.Moved && !left.Moved) //Number above is equal, numbers should be merged
                                 {
@@ -185,12 +187,11 @@ namespace _2048
                                     data[i-1][j].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
                                     data[i][j].Num = 0;//Set current to 0 as no longer a value there
                                     moved = true;
+                                    moves++;
                                 }
                             }
                         }
                     }
-                    NewTwoOrFour(0);
-                    ShowData();
                     break;
                 case "right":
                     while (moved)
@@ -220,13 +221,13 @@ namespace _2048
                             }
                         }
                     }
-                    NewTwoOrFour(0);
-                    ShowData();
                     break;
                 default:
                     break;
-                
             }
+            ShowData();
+            NewTwoOrFour(0);
+            ShowData();
             for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
             {
                 for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
