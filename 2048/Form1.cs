@@ -115,6 +115,7 @@ namespace _2048
                                         data[i][j - 1] = current;
                                         data[i][j] = above;
                                         moved = true;
+                                        moves++;
                                     }
                                     else
                                     {
@@ -130,6 +131,7 @@ namespace _2048
                                         data[i][j - 1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
                                         data[i][j].Num = 0;//Set current to 0 as no longer a value there
                                         moved = true;
+                                        moves++;
                                     }
                                     else
                                     {
@@ -160,6 +162,7 @@ namespace _2048
                                         data[i][j + 1] = current;
                                         data[i][j] = below;
                                         moved = true;
+                                        moves++;
                                     }
                                     else 
                                     {
@@ -175,6 +178,7 @@ namespace _2048
                                         data[i][j + 1].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
                                         data[i][j].Num = 0;//Set current to 0 as no longer a value there
                                         moved = true;
+                                        moves++;
                                     } else
                                     {
                                         moves++;
@@ -204,6 +208,7 @@ namespace _2048
                                         data[i - 1][j] = current;
                                         data[i][j] = left;
                                         moved = true;
+                                        moves++;
                                     } else
                                     {
                                         moves++;
@@ -218,6 +223,7 @@ namespace _2048
                                         data[i - 1][j].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
                                         data[i][j].Num = 0;//Set current to 0 as no longer a value there
                                         moved = true;
+                                        moves++;
                                     } else
                                     {
                                         moves++;
@@ -247,6 +253,7 @@ namespace _2048
                                         data[i + 1][j] = current;
                                         data[i][j] = right;
                                         moved = true;
+                                        moves++;
                                     } else
                                     {
                                         moves++;
@@ -261,6 +268,7 @@ namespace _2048
                                         data[i + 1][j].Moved = true; //Set moved to true so no other merges in this move occur. This value should be changed after the move (LMFAO sure it will)
                                         data[i][j].Num = 0;//Set current to 0 as no longer a value there
                                         moved = true;
+                                        moves++;
                                     } else
                                     {
                                         moves++;
@@ -292,8 +300,11 @@ namespace _2048
                 }
                 ShowData();
                 await Task.Delay(50);
-                NewTwoOrFour(0);
-                ShowData();
+                if (moves > 0)
+                {
+                    NewTwoOrFour(0);
+                    ShowData();
+                }
                 upLost = false;
                 downLost = false;
                 leftLost = false;
