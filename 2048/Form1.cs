@@ -30,6 +30,7 @@ namespace _2048
         bool rightLost = false;
         bool upLost = false;
         bool downLost = false;
+        bool gameOver = false;
         public Root()
         {
             InitializeComponent();//Not my code
@@ -284,6 +285,7 @@ namespace _2048
             }
             if (!theory)
             {
+                ShowData();
                 for (int i = 0; i < 4; i++) // Loops for all collums on the matrix
                 {
                     for (int j = 0; j < 4; j++) // Loops for all Rows on the matrix
@@ -292,13 +294,13 @@ namespace _2048
                         {
                             if (data[i][j].Num == 2048)
                             {
-                                MessageBox.Show("You have won!");
+                                gameOver = true;
+                                GameOver("won");
                             }
                             data[i][j].Moved = false; //does the impossible and allows the title to move agian (not clickbait)
                         }
                     }
                 }
-                ShowData();
                 await Task.Delay(50);
                 if (moves > 0)
                 {
@@ -337,8 +339,43 @@ namespace _2048
                 }
                 if (leftLost&&rightLost&&upLost&&downLost)
                 {
-                    MessageBox.Show("Nice one nerd, you lost.");
+                    gameOver=true;
+                    GameOver("lost");
                 }
+            }
+        }
+        async private void GameOver(string result)
+        {
+            DialogResult dialogResult = DialogResult.None;
+            if (result == "lost")
+            {
+                dialogResult = MessageBox.Show("You lost!\nWould you like to play again?", "Game over", MessageBoxButtons.YesNo);
+            }
+             else if (result=="won")
+            {
+                dialogResult = MessageBox.Show("You won!\nWould you like to play again?", "Game over", MessageBoxButtons.YesNo);
+            }
+            if (dialogResult == DialogResult.Yes)
+            {
+                //Restart game
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        data[i][j].Num = 0;
+                    }
+                }
+                ShowData();
+                NewTwoOrFour(0); // Adds a number 2 or 4 to the grid
+                NewTwoOrFour(0); // Adds a number 2 or 4 to the grid
+                await Task.Delay(10);
+                ShowData();
+                gameOver = false;
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //Close window as this nerd is clearly a sore loser.
+                this.Close();
             }
         }
         private void CreateStartingData()
@@ -350,8 +387,8 @@ namespace _2048
                     data[i][j] = new DataItem(0); //Makes a DataItem and sets the value to 0
                 }
             }
-            NewTwoOrFour(2); // Adds a number 2 to the grid, rigging it by putting (2)
-            NewTwoOrFour(4); // Adds a number 2 to the grid, rigging it by putting (4)
+            NewTwoOrFour(0); // Adds a number 2 or 4 to the grid
+            NewTwoOrFour(0); // Adds a number 2 or 4 to the grid
         }
         private void NewTwoOrFour(int rigged) // Takes in a interger which will be the number placed on the grid, however if the number is 0 it will randomise between a 2 or 4
         {
@@ -406,7 +443,7 @@ namespace _2048
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             int[] Arrows = { 37, 38, 39, 40 }; //Got these numbers through figuring it out
-            if (!Arrows.Contains(e.KeyValue)) { return; } //If not an arrow key don't bother
+            if (!Arrows.Contains(e.KeyValue) || gameOver) { return; } //If not an arrow key don't bother
             switch (e.KeyValue)
             {
                 case (37):
